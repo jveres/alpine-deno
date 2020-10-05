@@ -13,11 +13,8 @@ RUN apk add --virtual .download --no-cache curl \
 
 RUN addgroup -g 1993 -S deno \
         && adduser -u 1993 -S deno -G deno \
-        && mkdir /deno-dir/ \
-        && chown deno:deno /deno-dir/
-
-ENV DENO_DIR /deno-dir/
-ENV DENO_INSTALL_ROOT /usr/local
+        && mkdir /app \
+        && chown deno:deno /app
 
 COPY ./entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 RUN chmod 777 /usr/local/bin/docker-entrypoint.sh
