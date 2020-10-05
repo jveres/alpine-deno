@@ -1,10 +1,15 @@
 # alpine-deno
 
-Alpine Linux (`frolvlad/alpine-glibc:alpine-3.11_glibc-2.31`) based Deno image which is less than 65MB in size.
+Slim Deno runtime image from scratch, currently weights only *37MB*.
+
+### Build
+```sh
+docker build -t alpine-deno .
+```
 
 ### Open `repl`
 ```sh
-docker run -it --init jveres/alpine-deno:latest repl
+docker run -it --init alpine-deno deno
 ```
 
 ### Sample Dockerfile
@@ -14,5 +19,5 @@ EXPOSE 80
 WORKDIR /app
 USER deno
 COPY server.ts .
-CMD ["run","--allow-net", "server.ts"]
+CMD ["deno", "run", "-A", "server.ts"]
 ```

@@ -1,22 +1,23 @@
-FROM frolvlad/alpine-glibc:alpine-3.11_glibc-2.31
+FROM ubuntu:18.04
 
 ENV DENO_VERSION=1.4.4
 
-RUN apk add --virtual .download --no-cache curl \
-        && curl -fsSL https://github.com/denoland/deno/releases/download/v${DENO_VERSION}/deno-x86_64-unknown-linux-gnu.zip \
-        --output deno.zip \
+RUN apt-get update && apt-get -y install curl unzip binutils \
+        && curl -fsSL https://github.com/denoland/deno/releases/download/v${DENO_VERSION}/deno-x86_64-unknown-linux-gnu.zip --output deno.zip \
         && unzip deno.zip \
-        && rm deno.zip \
         && chmod 777 deno \
-        && mv deno /bin/deno \
-        && apk del .download
+        && mv deno /bin/deno
 
-RUN addgroup -g 1993 -S deno \
-        && adduser -u 1993 -S deno -G deno \
-        && mkdir /app \
-        && chown deno:deno /app
+RUN mkdir -p /rootfs
+RUN ldd /bin/deno \
+        /lib/x86_64-linux-gnu/libnss_files.so.* \
+        /lib/x86_64-linux-gnu/libnss_dns.so.* \
+    | grep -o -e '\/\(usr\|lib\)[^ :]\+' \
+    | sort -u | tee /rootfs.list \
+ && echo /bin/deno >> /rootfs.list
 
-COPY ./entrypoint.sh /usr/local/bin/docker-entrypoint.sh
-RUN chmod 777 /usr/local/bin/docker-entrypoint.sh
+RUN cat /rootfs.list | xargs strip
+RUN cat /rootfs.list | tar -T- -cphf- | tar -C /rootfs -xpf-
 
-ENTRYPOINT ["docker-entrypoint.sh"]
+FROM scratch
+COPY --from=0 /rootfs/ /
