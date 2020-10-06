@@ -1,13 +1,15 @@
 # slim-deno
 
-Minimal Deno runtime image from scratch, currently weights only *37MB*.
+Minimal Deno runtime image from scratch.
+
+![Docker Image Size (latest by date)](https://img.shields.io/docker/image-size/jveres/slim-deno)
 
 ### Build
 ```sh
 docker build -t slim-deno .
 ```
 
-### Open `repl`
+### Opening Deno `repl`
 ```sh
 docker run -it --init slim-deno deno
 ```
