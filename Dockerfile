@@ -1,6 +1,6 @@
-FROM ubuntu:18.04
+FROM ubuntu:18.04 as build
 
-ENV DENO_VERSION=1.4.5
+ENV DENO_VERSION=1.4.6
 
 RUN apt-get update && apt-get -y install curl unzip binutils \
         && curl -fsSL https://github.com/denoland/deno/releases/download/v${DENO_VERSION}/deno-x86_64-unknown-linux-gnu.zip --output deno.zip \
@@ -20,4 +20,4 @@ RUN cat /rootfs.list | xargs strip
 RUN cat /rootfs.list | tar -T- -cphf- | tar -C /rootfs -xpf-
 
 FROM scratch
-COPY --from=0 /rootfs/ /
+COPY --from=build /rootfs/ /
