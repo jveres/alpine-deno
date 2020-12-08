@@ -10,8 +10,6 @@ RUN apt-get update && apt-get -y install curl unzip binutils \
 
 RUN mkdir -p /rootfs
 RUN ldd /bin/deno \
-        /lib/x86_64-linux-gnu/libnss_files.so.* \
-        /lib/x86_64-linux-gnu/libnss_dns.so.* \
     | grep -o -e '\/\(usr\|lib\)[^ :]\+' \
     | sort -u | tee /rootfs.list \
  && echo /bin/deno >> /rootfs.list
