@@ -1,22 +1,22 @@
-# slim-deno
+# deno-xsim
 
-Minimal Deno runtime image from scratch.
+Minimal Deno runtime container image.
 
-![Docker Image Size (latest by date)](https://img.shields.io/docker/image-size/jveres/slim-deno)
+![Docker Image Size (latest by date)](https://img.shields.io/docker/image-size/jveres/deno-xsim)
 
 ### Build
 ```sh
-docker build -t slim-deno .
+docker build -t deno-xsim .
 ```
 
-### Opening Deno `repl`
+### Deno `repl`
 ```sh
-docker run -it --init slim-deno deno
+docker run -it --rm --init deno-xsim deno
 ```
 
 ### Sample Dockerfile
 ```Dockerfile
-FROM jveres/slim-deno:1.4.4
+FROM jveres/deno-xsim:latest
 EXPOSE 80
 COPY server.ts .
 CMD ["deno", "run", "-A", "server.ts"]
