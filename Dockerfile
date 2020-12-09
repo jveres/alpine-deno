@@ -10,13 +10,15 @@ RUN apt-get update && apt-get -y install curl unzip binutils \
 
 RUN mkdir -p /rootfs
 RUN ldd /bin/deno \
-        /lib/x86_64-linux-gnu/libnss_files.so.* \
-        /lib/x86_64-linux-gnu/libnss_dns.so.* \
+         /lib/x86_64-linux-gnu/libnss*.so.* \
     | grep -o -e '\/\(usr\|lib\)[^ :]\+' \
     | sort -u | tee /rootfs.list \
- && echo /bin/deno >> /rootfs.list
+ && echo /bin/deno >> /rootfs.list \
+ && echo /bin/cat >> /rootfs.list
 
 RUN cat /rootfs.list | xargs strip
+RUN echo /etc/nsswitch.conf >> /rootfs.list
+RUN cat /rootfs.list
 RUN cat /rootfs.list | tar -T- -cphf- | tar -C /rootfs -xpf-
 
 FROM scratch
