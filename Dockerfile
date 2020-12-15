@@ -17,8 +17,8 @@ RUN ldd /bin/deno \
  && echo /bin/cat >> /rootfs.list
 
 RUN cat /rootfs.list | xargs strip
+RUN echo 'hosts: files dns' > /etc/nsswitch.conf
 RUN echo /etc/nsswitch.conf >> /rootfs.list
-RUN cat /rootfs.list
 RUN cat /rootfs.list | tar -T- -cphf- | tar -C /rootfs -xpf-
 
 FROM scratch
