@@ -1,6 +1,6 @@
 FROM ubuntu:18.04 as build
 
-ENV DENO_VERSION=v1.6.0
+ENV DENO_VERSION=v1.6.1
 
 RUN apt-get update && apt-get -y install curl unzip binutils \
         && curl -fsSL https://github.com/jveres/deno-xs/releases/download/${DENO_VERSION}/deno-x86_64-unknown-linux-gnu.zip --output deno.zip \
