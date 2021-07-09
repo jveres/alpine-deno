@@ -1,4 +1,4 @@
-FROM ubuntu:18.04 as build
+FROM ubuntu:19.04 as build
 
 ENV DENO_VERSION=v1.11.5
 
